@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{~/js/jquery.js}"></script>
+</head>
+<body>
+<h1>ES测试</h1>
+<form method="POST" action="/insert/user" style="margin-bottom: 10px;">
+    名称：<input name="name" type="text"/>
+    年龄：<input name="age" type="text"/>
+    分数：<input name="course" type="text"/>
+    <input type="submit" value="新增"/>
+</form>
+
+<table id="table" border="1" cellspacing="0" cellpadding="5">
+    <thead>
+        <th>名称</th>
+        <th>年龄</th>
+        <th>分数</th>
+        <th>创建时间</th>
+        <th>编辑</th>
+    </thead>
+<script>
+    getTable();
+    function getTable(){
+        $.ajax({
+            url: "/search/user?pageIndex=1&pageSize=10",
+            type: "GET",
+            success(json) {
+                let oTable = document.getElementById('table');
+                let oTb = document.getElementById('tb');
+                if(oTb) {
+                    oTb.parentNode.removeChild(oTb);
+                }
+                let oTr = `<tbody id="tb">`;
+                json.forEach(item => {
+                    oTr += `<tr id="${item.id}">
+                            <td>${item.name}</td>
+                            <td>${item.age}</td>
+                            <td>${item.course}</td>
+                            <td>${item.create_time}</td>
+                            <td><a href="#" onclick="Delete(this)">删除</a></td>
+                        </tr>`;
+                });
+                oTr += "</tbody>";
+                oTable.innerHTML = oTr;
+            }
+        });
+    }
+
+    function Delete(e){
+        var tr = e.parentNode.parentNode;
+        $.ajax({
+            url: `/delete_id/user?id=${tr.id}`,
+            type: "DELETE",
+            success(json){
+                getTable();
+            },
+            error(e){
+                console.log(e);
+            }
+        });
+    }
+</script>
+</body>
+</html>
