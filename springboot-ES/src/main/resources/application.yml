@@ -1,0 +1,4 @@
+spring:
+  elasticsearch:
+    jest:
+      uris: http://localhost:9200,http://localhost:8300
