@@ -22,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EsRestClientTests {
@@ -33,11 +36,13 @@ public class EsRestClientTests {
 	 */
 	@Test
 	public void index() {
+		// json方式
 		IndexRequest request = new IndexRequest("user3", "teacher");
 		String jsonString = "{" + "\"user\":\"测试\"," + "\"postDate\":\"2013-01-30\","
 				+ "\"message\":\"trying out Elasticsearch\"" + "}";
 		request.source(jsonString, XContentType.JSON);
 
+		// Map方式
 		Map<String, Object> jsonMap = new HashMap<>();
 		jsonMap.put("user", "kimchy");
 		jsonMap.put("postDate", new Date());
@@ -46,10 +51,10 @@ public class EsRestClientTests {
 
 		try {
 			IndexResponse index = restClient.index(request);
-			System.out.println(index.getResult());
+			log.info("index is {}", index.getId());
 
 			IndexResponse index2 = restClient.index(request2);
-			System.out.println(index2.getResult());
+			log.info("index is {}", index2.getId());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,22 +67,22 @@ public class EsRestClientTests {
 	public void Search() {
 		SearchRequest searchRequest = new SearchRequest("user").types("teacher");
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+		// 中文分词，需要把中文分隔成单个字符查询
 		String name = "张三1";
 		String[] names = name.split("");
 		Arrays.asList(names).forEach(n -> {
 			sourceBuilder.query(QueryBuilders.termQuery("name", n));
 		});
-
+		// 设置超时
 		sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 		searchRequest.source(sourceBuilder);
 		try {
 			SearchResponse response = restClient.search(searchRequest);
 			Arrays.stream(response.getHits().getHits()).forEach(i -> {
-				System.out.println(i.getIndex());
-				System.out.println(i.getSourceAsString());
-				System.out.println(i.getType());
+				log.info("ID is {}", i.getId());
+				log.info("result is {}", i.getSourceAsString());
 			});
-			System.out.println(response.getHits().totalHits);
+			log.info("result total {}", response.getHits().totalHits);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
