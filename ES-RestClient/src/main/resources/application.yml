@@ -1,0 +1,8 @@
+#spring:
+#  elasticsearch:
+#    rest:
+#      uris: http://localhost:9200,http://localhost:8300
+
+      
+elasticsearch:
+  ip: localhost:9200,
