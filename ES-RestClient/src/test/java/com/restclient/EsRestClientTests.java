@@ -56,14 +56,18 @@ public class EsRestClientTests {
 	}
 
 	/**
-	 * 测试是否连接上ES
+	 * Search-API：查询
 	 */
 	@Test
-	public void contextLoads() {
-		SearchRequest searchRequest = new SearchRequest("user");
-		searchRequest.types("teacher");
+	public void Search() {
+		SearchRequest searchRequest = new SearchRequest("user").types("teacher");
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-		sourceBuilder.query(QueryBuilders.termQuery("age", "31"));
+		String name = "张三1";
+		String[] names = name.split("");
+		Arrays.asList(names).forEach(n -> {
+			sourceBuilder.query(QueryBuilders.termQuery("name", n));
+		});
+
 		sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 		searchRequest.source(sourceBuilder);
 		try {
