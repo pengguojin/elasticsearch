@@ -118,9 +118,9 @@ private TransportClient client;
 	- 直接在application.yml配置文件添加配置即可
 		```yml
 		spring:
-		  elasticsearch:
-			rest:
-			  uris: http://localhost:9200,http://localhost:8300
+			elasticsearch:
+				rest:
+					uris: http://localhost:9200,http://localhost:8300
 		```
 	- 如果使用low版本，直接使用@Autowired注入RestClient即可
 	- 如果使用high版本，添加配置类，然后是@Autowired注入RestHighLevelClient即可
@@ -215,9 +215,9 @@ private TransportClient client;
 - 3、在application.yml添加配置
 	```yml
 	spring:
-	  elasticsearch:
-		jest:
-		  uris: http://localhost:8200
+		elasticsearch:
+			jest:
+				uris: http://localhost:8200
 	```
 - 4、使用，直接注入JestClient即可
 
@@ -241,9 +241,11 @@ private TransportClient client;
 - 3、在application.yml添加配置
 	```
 	#elasticsearch
-	ES.host = localhost
-	ES.port = 9300
-	ES.cluster.name = jin
+	ES:
+		host: localhost
+		port: 9300
+		cluster
+			name: jin
 	```
 - 4、添加配置类
 	```
