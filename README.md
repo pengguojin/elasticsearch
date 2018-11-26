@@ -1,7 +1,12 @@
 # elasticsearch
 
 ## 项目介绍
-elasticsearch学习工程，涉及到java-API有TransportClient、RestClient、springboot，jest、elasticsearch-sql(非官方)			
+elasticsearch学习工程，涉及到java-API有
+	- TransportClient
+	- RestClient
+	- springboot
+	- jest
+	- elasticsearch-sql(非官方)			
 项目基于springboot+maven构建
 
 ## 教程
@@ -215,3 +220,77 @@ private TransportClient client;
 		  uris: http://localhost:8200
 	```
 - 4、使用，直接注入JestClient即可
+
+#### 五、elasticsearch-sql（非官方）
+为什么是非官方，因为elasticsearch官方版本6以上带sql查询功能，但是收费，这里使用的是GitHub某大神的开源方法
+- 1、官方文档
+[官方文档地址](https://github.com/NLPchina/elasticsearch-sql)
+- 2、引入maven依赖
+	> 本质上还是依赖于官方提供的java-api，所以这里需要引入transport-client
+	```
+	<dependency>
+		<groupId>org.elasticsearch.client</groupId>
+		<artifactId>transport</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.nlpcn</groupId>
+		<artifactId>elasticsearch-sql</artifactId>
+		<version>5.1.2.0</version>
+	</dependency>
+	```
+- 3、在application.yml添加配置
+	```
+	#elasticsearch
+	ES.host = localhost
+	ES.port = 9300
+	ES.cluster.name = jin
+	```
+- 4、添加配置类
+	```
+	@Configuration
+	public class ESConfig {
+		@Autowired
+		Environment env;
+		
+		// TransportClient配置
+		@Bean
+		public TransportClient client() throws UnknownHostException {
+			String esClusterName = env.getProperty("ES.cluster.name");
+			String host = env.getProperty("ES.host");
+			int port = Integer.valueOf(env.getProperty("ES.port"));
+
+			InetSocketTransportAddress node = new InetSocketTransportAddress(InetAddress.getByName(host), port);
+			Settings setting = Settings.builder().put("cluster.name", esClusterName).build();
+			TransportClient client = new PreBuiltTransportClient(setting);
+			client.addTransportAddress(node);
+			return client;
+		}
+		 
+		// elasticsearch-sql配置
+		@Bean
+		public SearchDao searchDao(@Autowired TransportClient client) throws UnknownHostException {
+			return new SearchDao(client);
+		}
+	}
+	```
+- 5、使用，直接注入SearchDao即可
+	```
+	@Autowired
+	private SearchDao searchDao;
+
+	@Test
+	public void testEs() throws SQLFeatureNotSupportedException, SqlParseException {
+		// 查询sql
+		String sql = "select * from user";
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		// 执行查询，返回的方法跟TransportClient一样
+		SearchResponse response = (SearchResponse) searchDao.explain(sql).explain().getBuilder().get();
+		for (SearchHit hit : response.getHits().getHits()) {
+			Map<String, Object> map = hit.getSource();
+			map.put("id", hit.getId());
+			list.add(map);
+		}
+		System.out.println(list);
+	}
+	```
+	

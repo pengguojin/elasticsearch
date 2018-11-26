@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "ES.host",
+    "type": "java.lang.String",
+    "description": "A description for 'ES.host'"
+  },
+  {
+    "name": "ES.cluster.name",
+    "type": "java.lang.String",
+    "description": "A description for 'ES.cluster.name'"
+  },
+  {
+    "name": "ES.jdbc",
+    "type": "java.lang.String",
+    "description": "A description for 'ES.jdbc'"
+  },
+  {
+    "name": "ES.port",
+    "type": "java.lang.String",
+    "description": "A description for 'ES.port'"
+  }
+]}

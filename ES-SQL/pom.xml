@@ -19,21 +19,6 @@
 		<relativePath />
 	</parent>
 
-	<!--
-	    <repository>
-	        <id>maven-ali</id>
-	        <url>http://maven.aliyun.com/nexus/content/groups/public//</url>
-	        <releases>
-	            <enabled>true</enabled>
-	        </releases>
-	        <snapshots>
-	            <enabled>true</enabled>
-	            <updatePolicy>always</updatePolicy>
-	            <checksumPolicy>fail</checksumPolicy>
-	        </snapshots>  
-	    </repository>  
-	</repositories> -->
-	
 	<repositories>
 		<repository>
 			<id>nexus</id>
@@ -64,6 +49,16 @@
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
 			<artifactId>transport</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nlpcn</groupId>
+			<artifactId>elasticsearch-sql</artifactId>
+			<version>5.1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
