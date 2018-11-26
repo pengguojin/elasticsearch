@@ -11,6 +11,7 @@ public class UserEntity implements Serializable {
 	private String name;
 	private Integer age;
 	private String sex;
+	private Long createTime;
 
 	public String getId() {
 		return id;
@@ -42,6 +43,14 @@ public class UserEntity implements Serializable {
 
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public Long getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Long createTime) {
+		this.createTime = createTime;
 	}
 
 }
