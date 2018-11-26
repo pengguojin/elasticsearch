@@ -1,12 +1,12 @@
 # elasticsearch
 
-#### 项目介绍
+## 项目介绍
 elasticsearch学习工程，涉及到java-API有TransportClient、RestClient、springboot，jest、elasticsearch-sql(非官方)			
 项目基于springboot+maven构建
 
-#### 教程
+## 教程
 
-##### 一、TransportClient
+#### 一、TransportClient
 - 1、官方文档
 [官方文档地址](https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/transport-client.html)
 
@@ -40,7 +40,7 @@ public class ESConfig {
 private TransportClient client;
 ```
 
-##### 二、RestClient
+#### 二、RestClient
 > RestClient只支持elasticsearch5.0以上的版本，是TransportClient的替代品，TransportClient有性能问题，高版本建议使用RestClient
 - 1、官方文档
 [官方文档地址](https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/index.html)
@@ -129,7 +129,7 @@ private TransportClient client;
 		}
 		```
 		
-##### 三、springboot
+#### 三、springboot
 > springboot-elasticsearch是基于springdata的
 - 1、官方文档
 [官方文档地址](https://docs.spring.io/spring-data/elasticsearch/docs/3.1.0.RELEASE/reference/html)
@@ -195,7 +195,7 @@ private TransportClient client;
 	....
 	```
 	
-##### 四、jest
+#### 四、Jest
 - 1、官方文档
 [官方文档地址](https://github.com/searchbox-io/Jest)
 - 2、引入maven依赖
